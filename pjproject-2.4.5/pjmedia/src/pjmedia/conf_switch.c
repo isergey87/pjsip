@@ -1518,8 +1518,11 @@ static pj_status_t put_frame(pjmedia_port *this_port,
 		pj_int32_t itemp = *p;
 
 		/* Adjust the level */
-		itemp = (itemp * cport->rx_adj_level) >> 7;
-
+            /* bad code (signed/unsigned badness):
+             *  itemp = (itemp * cport->rx_adj_level) >> 7;
+             */
+            itemp *= cport->rx_adj_level;
+            itemp >>= 7;
 		/* Clip the signal if it's too loud */
 		if (itemp > MAX_LEVEL) itemp = MAX_LEVEL;
 		else if (itemp < MIN_LEVEL) itemp = MIN_LEVEL;
