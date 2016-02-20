@@ -37,7 +37,7 @@ if [ ! -f ./configure-iphone ]; then
 fi
 
 
-DEST_FOLDER="$dest/pjsip"
+DEST_FOLDER="$dest/build-ios"
 
 
 if [ -d "$DEST_FOLDER" ]; then

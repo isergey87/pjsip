@@ -46,7 +46,7 @@ echo "configure-iphone not found!"
 exit 1
 fi
 
-DEST_FOLDER="$dest/pjsip-android"
+DEST_FOLDER="$dest/build-android"
 
 
 if [ -d "$DEST_FOLDER" ]; then
