@@ -1114,8 +1114,13 @@ static pj_status_t write_frame(struct conf_port *cport_dst,
                 while (p < p_end) {
                     pj_int32_t itemp = *p;
 
+                    
                     /* Adjust the level */
-                    itemp = (itemp * cport_dst->tx_adj_level) >> 7;
+                    /* bad code (signed/unsigned badness):
+                     *  itemp = (itemp * cport_dst->tx_adj_level) >> 7;
+                     */
+                    itemp *= cport_dst->tx_adj_level;
+                    itemp >>= 7;
 
                     /* Clip the signal if it's too loud */
                     if (itemp > MAX_LEVEL) itemp = MAX_LEVEL;
