@@ -10,6 +10,15 @@
 configsite=`cat config_site.h`
 DIRSTART=$PWD
 
+if [ ! -d "$1" ]; then
+echo "please input correct path to pjsip source as parameter 1"
+exit 1
+fi
+cd "$1"
+PJSIP=$PWD
+cd $DIRSTART
+
+
 if [ ! -d "$2" ]; then
 echo "please input correct ANDROID_NDK_ROOT path as parameter 2"
 exit 1
@@ -33,13 +42,7 @@ cd $DIRSTART
 fi
 
 
-
-if [ ! -d "$1" ]; then
-echo "please input correct path to pjsip source as parameter 1"
-exit 1
-fi
-
-cd "$1"
+cd "$PJSIP"
 
 if [ ! -f ./configure-iphone ]; then
 echo "configure-iphone not found!"
@@ -88,6 +91,7 @@ mkdir -p "$LIB"
 
 for platform in "${PLATFORMS[@]}"
 do
+cd "$PJSIP"
 APP_PLATFORM=android-14 TARGET_ABI=$platform ./configure-android --use-ndk-cflags
 make dep && make realclean && make
 mkdir -p "$LIB/$platform"
@@ -95,7 +99,18 @@ mkdir -p "$LIB/$platform"
 cd "$PJSUA"
 make
 
+
+echo "-----------------------------------------------------------------before copy"
+read -n 1 -s
+
+
 mv "$PJSUA/java/android/libs/armeabi/libpjsua2.so" "$LIB/$platform"
+
+
+echo "-----------------------------------------------------------------after copy"
+read -n 1 -s
+
+
 done
 
 
